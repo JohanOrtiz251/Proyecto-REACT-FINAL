@@ -1,0 +1,16 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+
+.dark {
+    background-color: #111827; /* Color de fondo para el modo oscuro */
+  }
+  
+  /* Estilos para el modo claro */
+  .light {
+    background-color: #ffffff; /* Color de fondo para el modo claro */
+  }
+  
+
+  
