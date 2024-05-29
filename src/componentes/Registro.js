@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { FiSun, FiMoon, FiEye, FiEyeOff } from 'react-icons/fi';
 
 const Registro = ({ darkMode, toggleDarkMode }) => {
+
+    let URL = process.env.REACT_APP_ENVIRONMENT
+
     const [formData, setFormData] = useState({
         nombres: '',
         apellidos: '',
@@ -36,13 +39,27 @@ const Registro = ({ darkMode, toggleDarkMode }) => {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/registro', {
+
+            // Este es para conectarse localmente
+
+            /* const response = await fetch('http://localhost:3001/registro', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
             });
+ */
+            // Este es para conectarse remotamente
+
+            const response = await fetch(`${URL}/registro`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
 
             const responseData = await response.json();
             if (response.ok) {
