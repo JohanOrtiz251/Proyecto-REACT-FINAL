@@ -9,7 +9,7 @@ const Login = ({ darkMode, toggleDarkMode }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const URL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_ENVIRONMENT : 'http://localhost:3001';
+    let URL = process.env.REACT_APP_ENVIRONMENT
 
 
 
