@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c209849.css",
-    "main.js": "/static/js/main.65fb1caf.js",
+    "main.js": "/static/js/main.38ec9d9e.js",
     "static/media/Asus.png": "/static/media/Asus.374256bb49107348af43.png",
     "static/media/DELL.png": "/static/media/DELL.0a226ad490fe56c39124.png",
     "static/media/PREDATOR.png": "/static/media/PREDATOR.bd01b215690811f7cccd.png",
@@ -16,10 +16,10 @@
     "static/media/PocoX5.jpg": "/static/media/PocoX5.35b4fcb9986c355fac14.jpg",
     "index.html": "/index.html",
     "main.0c209849.css.map": "/static/css/main.0c209849.css.map",
-    "main.65fb1caf.js.map": "/static/js/main.65fb1caf.js.map"
+    "main.38ec9d9e.js.map": "/static/js/main.38ec9d9e.js.map"
   },
   "entrypoints": [
     "static/css/main.0c209849.css",
-    "static/js/main.65fb1caf.js"
+    "static/js/main.38ec9d9e.js"
   ]
 }
