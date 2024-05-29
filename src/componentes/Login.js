@@ -1,57 +1,56 @@
 import React, { useState } from 'react';
-import { FiSun, FiMoon, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiSun, FiMoon } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import Cookies from 'universal-cookie'; 
 
 const Login = ({ darkMode, toggleDarkMode }) => {
     const cookies = new Cookies();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const URL = process.env.REACT_APP_ENVIRONMENT;
+    const [error, setError] = useState('');
+
+    const [URL, setURL] = useState(process.env.REACT_APP_ENVIRONMENT);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${URL}/login`, {
+
+             /* const response = await fetch('http://localhost:3001/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email, password })
             });
+            const data = await response.json(); */
 
+            const response = await fetch(`${URL}/login`, { // Utilizar la URL dinámica en la llamada a fetch
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
             const data = await response.json();
-
+            
             if (response.ok) {
+                
                 cookies.set('email', email, { path: '/' });
                 cookies.set('token', data.token, { path: '/' });
                 cookies.set('nombres', data.user.nombres, { path: '/' });
-                cookies.set('apellidos', data.user.apellidos, { path: '/' });
-
-                Swal.fire({
-                    title: 'Login successful',
-                    icon: 'success'
-                });
-
+                cookies.set('apellidos', data.user.apellidos, { path: '/' }); 
+    
                 window.location.href = '/dashboard';
-            } else {
-                throw new Error(data.error || 'Error logging in');
+            }
+             else {
+                setError(data.error);
             }
         } catch (error) {
-            console.error('Error:', error);
-            Swal.fire({
-                title: 'Error logging in',
-                text: error.message || 'Please try again later',
-                icon: 'error'
-            });
+            console.error('Error al iniciar sesión:', error);
+            setError('Error al iniciar sesión. Por favor, intenta nuevamente.');
         }
     };
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
 
     return (
         <section className="relative bg-gray-50 dark:bg-gray-900">
@@ -81,41 +80,14 @@ const Login = ({ darkMode, toggleDarkMode }) => {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Sign in to your account
                         </h1>
-                        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" action="#">
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                                <input 
-                                    type="email" 
-                                    value={email} 
-                                    onChange={(e) => setEmail(e.target.value)} 
-                                    name="email" 
-                                    id="email" 
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                    placeholder="name@company.com" 
-                                    required 
-                                />
+                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required />
                             </div>
                             <div>
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                <div className="relative">
-                                    <input 
-                                        type={showPassword ? "text" : "password"} 
-                                        value={password} 
-                                        onChange={(e) => setPassword(e.target.value)} 
-                                        name="password" 
-                                        id="password" 
-                                        placeholder="••••••••" 
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                        required 
-                                    />
-                                    <button 
-                                        type="button" 
-                                        className="absolute inset-y-0 right-0 flex items-center px-3 focus:outline-none"
-                                        onClick={togglePasswordVisibility}
-                                    >
-                                        {showPassword ? <FiEyeOff className="w-5 h-5 text-gray-500" /> : <FiEye className="w-5 h-5 text-gray-500" />}
-                                    </button>
-                                </div>
+                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                             </div>
                             <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                             {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -129,5 +101,6 @@ const Login = ({ darkMode, toggleDarkMode }) => {
         </section>
     );
 };
+
 
 export default Login;
