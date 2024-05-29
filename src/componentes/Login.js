@@ -9,12 +9,22 @@ const Login = ({ darkMode, toggleDarkMode }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const URL = process.env.REACT_APP_ENVIRONMENT;
+    const [URL, setURL] = useState(process.env.REACT_APP_ENVIRONMENT);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${URL}/login`, {
+
+             /* const response = await fetch('http://localhost:3001/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json(); */
+
+            const response = await fetch(`${URL}/login`, { // Utilizar la URL dinámica en la llamada a fetch
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -22,6 +32,7 @@ const Login = ({ darkMode, toggleDarkMode }) => {
                 body: JSON.stringify({ email, password })
             });
             const data = await response.json();
+            
             if (response.ok) {
                 
                 cookies.set('email', email, { path: '/' });
