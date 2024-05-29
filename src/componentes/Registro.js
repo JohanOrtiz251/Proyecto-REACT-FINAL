@@ -55,7 +55,7 @@ const Registro = ({ darkMode, toggleDarkMode }) => {
             const response = await fetch(`${URL}/registro`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json","Accept": "application/json"
                 },
                 body: JSON.stringify(formData)
             });
