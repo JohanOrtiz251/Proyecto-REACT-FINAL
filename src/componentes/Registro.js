@@ -51,7 +51,7 @@ const Registro = ({ darkMode, toggleDarkMode }) => {
             });
  */
             // Este es para conectarse remotamente
-
+            console.log(URL)
             const response = await fetch(`${URL}/registro`, {
                 method: 'POST',
                 headers: {
