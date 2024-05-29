@@ -9,11 +9,24 @@ const Login = ({ darkMode, toggleDarkMode }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const URL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_ENVIRONMENT : 'http://localhost:3001';
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
           
-            const response = await fetch('http://localhost:3001/login', {
+            /* const response = await fetch('http://localhost:3001/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json(); */
+
+            const response = await fetch(`${URL}/login`, { // Utilizar la URL basada en el entorno
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
