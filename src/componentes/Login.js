@@ -13,21 +13,13 @@ const Login = ({ darkMode, toggleDarkMode }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formData = { email, password };  // Definir formData
         try {
-
-             /* const response = await fetch('http://localhost:3001/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await response.json(); */
-
             const response = await fetch(`${URL}/login`, {
                 method: 'POST',
                 headers: {
-                    "Content-Type": "application/json", "Accept": "application/json"
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: JSON.stringify(formData)
             });
@@ -35,23 +27,20 @@ const Login = ({ darkMode, toggleDarkMode }) => {
             const responseData = await response.json();
             
             if (response.ok) {
-                
                 cookies.set('email', email, { path: '/' });
-                cookies.set('token', data.token, { path: '/' });
-                cookies.set('nombres', data.user.nombres, { path: '/' });
-                cookies.set('apellidos', data.user.apellidos, { path: '/' }); 
-    
+                cookies.set('token', responseData.token, { path: '/' });
+                cookies.set('nombres', responseData.user.nombres, { path: '/' });
+                cookies.set('apellidos', responseData.user.apellidos, { path: '/' }); 
+
                 window.location.href = '/dashboard';
-            }
-             else {
-                setError(data.error);
+            } else {
+                setError(responseData.error);
             }
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
             setError('Error al iniciar sesión. Por favor, intenta nuevamente.');
         }
     };
-
 
     return (
         <section className="relative bg-gray-50 dark:bg-gray-900">
@@ -102,6 +91,5 @@ const Login = ({ darkMode, toggleDarkMode }) => {
         </section>
     );
 };
-
 
 export default Login;
