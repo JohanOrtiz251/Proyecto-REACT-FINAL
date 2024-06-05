@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const { registrarUsuario, iniciarSesion } = require('./controllers/userController');
 const bodyParser = require('body-parser');
-const axios = require('axios'); // Importar axios
+const path = require('path');
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -33,6 +34,14 @@ app.get("/", (req, res) => {
       console.error('Error fetching data from JSONBin:', error);
       res.status(500).send('Error fetching data');
     });
+});
+
+// Sirve los archivos estáticos de la aplicación React
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Manejador de rutas para todas las demás solicitudes, devolviendo index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(PORT, () => {
