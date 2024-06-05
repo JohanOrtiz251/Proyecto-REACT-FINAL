@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FiSun, FiMoon } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import Cookies from 'universal-cookie'; 
+import { Link, withRouter } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
-const Login = ({ darkMode, toggleDarkMode }) => {
+const Login = ({ darkMode, toggleDarkMode, history }) => {
     const cookies = new Cookies();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,26 +13,24 @@ const Login = ({ darkMode, toggleDarkMode }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = { email, password };  // Definir formData
         try {
             const response = await fetch(`${URL}/login`, {
                 method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({ email, password })
             });
 
             const responseData = await response.json();
-            
+
             if (response.ok) {
                 cookies.set('email', email, { path: '/' });
                 cookies.set('token', responseData.token, { path: '/' });
                 cookies.set('nombres', responseData.user.nombres, { path: '/' });
-                cookies.set('apellidos', responseData.user.apellidos, { path: '/' }); 
-
-                window.location.href = '/dashboard';
+                cookies.set('apellidos', responseData.user.apellidos, { path: '/' });
+                history.push('/dashboard');
             } else {
                 setError(responseData.error);
             }
@@ -70,7 +68,7 @@ const Login = ({ darkMode, toggleDarkMode }) => {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Sign in to your account
                         </h1>
-                        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" action="#">
+                        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required />
@@ -92,4 +90,4 @@ const Login = ({ darkMode, toggleDarkMode }) => {
     );
 };
 
-export default Login;
+export default withRouter(Login);
